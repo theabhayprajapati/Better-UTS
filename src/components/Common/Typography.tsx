@@ -1,16 +1,21 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 
 interface Props {
-    variant: 'header' | 'h1' | 'h2' | 'h3' | 'default';
+    variant: 'header' | 'h1' | 'h2' | 'h3' | 'h4' | 'default';
     children: ReactNode;
+    style?: StyleProp<TextStyle>
 }
 
-const Typography: React.FC<Props> = ({ variant, children }) => {
-    const styles = getStyles(variant);
+const Typography: React.FC<Props> = ({ variant, children, style }) => {
+    var styles = getStyles(variant);
 
+
+
+
+    color: 'white'
     return (
-        <Text style={styles}>
+        <Text style={[styles, style]}>
             {children}
         </Text>
     );
@@ -26,6 +31,8 @@ const getStyles = (variant: Props['variant']) => {
             return styles.h2;
         case 'h3':
             return styles.h3;
+        case 'h4':
+            return styles.h4;
         default:
             return styles.default;
     }
@@ -33,24 +40,34 @@ const getStyles = (variant: Props['variant']) => {
 
 const styles = StyleSheet.create({
     header: {
-        fontSize: 28,
+        fontSize: 48,
         fontWeight: 'bold',
+        color: 'white'
     },
     h1: {
-        fontSize: 24,
+        fontSize: 40,
         fontWeight: 'bold',
+        color: 'white'
     },
     h2: {
-        fontSize: 20,
+        fontSize: 32,
         fontWeight: 'bold',
+        color: 'white'
     },
     h3: {
-        fontSize: 16,
+        fontSize: 24,
         fontWeight: 'bold',
+        color: 'white'
+    },
+    h4: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'white'
     },
     default: {
         fontSize: 14,
         fontWeight: 'normal',
+        color: 'white'
     },
 });
 

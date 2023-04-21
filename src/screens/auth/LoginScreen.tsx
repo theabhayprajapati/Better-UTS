@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Typography from '../../components/Common/Typography';
+import Header from '../../components/Screen/Header';
+import { colors } from '../../constants/Colors';
+
+import { Button } from '@rneui/themed';
+import { TouchableOpacity } from 'react-native';
+
 
 type Props = {
     onLogin: () => void;
@@ -8,6 +16,7 @@ type Props = {
 const LoginScreen = ({ onLogin }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isSelected, setSelection] = useState(false);
 
     const handleLogin = () => {
         // Perform authentication logic here.
@@ -16,36 +25,108 @@ const LoginScreen = ({ onLogin }: Props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                autoCapitalize="none"
-            />
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-        </View>
+        <SafeAreaView style={{
+            backgroundColor: colors.gray,
+            flex: 1
+        }}>
+            <View style={styles.container}>
+                <Header />
+                <View style={{
+                    borderRadius: 20,
+                    backgroundColor: colors.gray,
+                    marginTop: 30,
+                    padding: 16
+                }}>
+                    <Typography variant='h2'>
+                        Login
+                    </Typography>
+                    <View style={{
+                        marginTop: 20
+                    }}
+                    >
+                        <Typography variant='default'>
+                            Mobile Number
+                        </Typography>
+
+                        {/* text input */}
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Mobile Number"
+                            onChangeText={text => setEmail(text)}
+                            defaultValue={email}
+                        />
+                        <VerticalLine />
+
+                        <Typography variant='default'>
+                            Password
+                        </Typography>
+
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Password"
+                            onChangeText={text => setPassword(text)}
+                            defaultValue={password}
+                            secureTextEntry={true}
+                        />
+                        <VerticalLine />
+                    </View>
+                    <View style={{
+                        marginTop: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+
+                        <Typography variant='default'>
+                            Forgot Password?
+                        </Typography>
+                    </View>
+                    <View style={{
+                        marginTop: 20
+                    }}>
+
+                        <Button
+                            title="Let me in"
+                            buttonStyle={{
+                                backgroundColor: colors.primary,
+                                borderRadius: 30,
+                                height: 48
+                            }}
+                        />
+                    </View>
+                </View>
+                <View
+                    style={
+                        {
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: 20,
+                            gap: 10
+                        }
+                    }>
+                    <Typography variant='default'>
+                        Don't have an account?
+                    </Typography>
+                    <TouchableOpacity>
+                        <Typography variant='default' style={
+                            {
+                                color: colors.primary
+                            }
+                        }>
+                            Register
+                        </Typography>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </SafeAreaView>
+
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "black"
     },
     title: {
         fontSize: 24,
@@ -53,12 +134,11 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     input: {
-        width: '80%',
+        width: '100%',
         padding: 12,
-        borderWidth: 1,
-        borderColor: '#ccc',
+
         borderRadius: 6,
-        marginBottom: 16,
+        color: 'white'
     },
     button: {
         backgroundColor: '#0066cc',
@@ -71,6 +151,23 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    checkbox: {
+        alignSelf: 'center',
+    },
 });
 
 export default LoginScreen;
+
+// vertical line
+const VerticalLine = () => {
+    return (
+        <View
+            style={{
+                height: 2,
+                width: '100%',
+                backgroundColor: 'gray',
+                marginHorizontal: 10
+            }}
+        />
+    )
+}

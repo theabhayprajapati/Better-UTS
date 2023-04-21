@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import LoginScreen from './src/screens/auth/LoginScreen';
 
 
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
-    // Here you can perform any app initialization logic, such as loading fonts or data.
-    // Once the initialization is complete, set `isAppReady` to `true`.
     setIsAppReady(true);
   }, []);
 
@@ -30,14 +29,26 @@ export default function App() {
 
   if (!isLoggedIn) {
     // Show the login screen if the user is not logged in.
-    return <LoginScreen onLogin={handleLogin} />;
+    return <SafeAreaProviderWrapper>
+      <LoginScreen onLogin={handleLogin} />
+    </SafeAreaProviderWrapper>
   }
 
   // If the user is logged in, show the tab navigator screen.
-  return <BottomTabNavigator />
+  return <SafeAreaProviderWrapper>
+    <BottomTabNavigator />
+  </SafeAreaProviderWrapper>
 };
 
 
+type SafeAreaProviderWrapperProps = {
+  children: React.ReactNode;
+}
+const SafeAreaProviderWrapper = (props: SafeAreaProviderWrapperProps) => {
+  return <SafeAreaProvider>
+    {props.children}
+  </SafeAreaProvider>
+}
 
 const styles = StyleSheet.create({
   container: {
