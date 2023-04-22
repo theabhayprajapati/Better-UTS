@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 
 interface Props {
     variant: 'header' | 'h1' | 'h2' | 'h3' | 'h4' | 'default';
@@ -9,10 +9,6 @@ interface Props {
 
 const Typography: React.FC<Props> = ({ variant, children, style }) => {
     var styles = getStyles(variant);
-
-
-
-
     color: 'white'
     return (
         <Text style={[styles, style]}>

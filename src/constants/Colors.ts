@@ -4,5 +4,11 @@ const colors = {
     not_selected: '#555453',
     gray: "#1f1f1f"
 }
-export { colors }
+const margin = {
+    primary: 24,
+}
+const padding = {
+    primary: 16,
+}
+export { colors, margin, padding }
 

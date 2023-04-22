@@ -35,7 +35,8 @@ const LoginScreen = ({ onLogin }: Props) => {
                     borderRadius: 20,
                     backgroundColor: colors.gray,
                     marginTop: 30,
-                    padding: 16
+                    padding: 16,
+                    marginHorizontal: 24
                 }}>
                     <Typography variant='h2'>
                         Login
@@ -44,31 +45,8 @@ const LoginScreen = ({ onLogin }: Props) => {
                         marginTop: 20
                     }}
                     >
-                        <Typography variant='default'>
-                            Mobile Number
-                        </Typography>
-
-                        {/* text input */}
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Enter Mobile Number"
-                            onChangeText={text => setEmail(text)}
-                            defaultValue={email}
-                        />
-                        <VerticalLine />
-
-                        <Typography variant='default'>
-                            Password
-                        </Typography>
-
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Enter Password"
-                            onChangeText={text => setPassword(text)}
-                            defaultValue={password}
-                            secureTextEntry={true}
-                        />
-                        <VerticalLine />
+                        <InputComponent variant="default" label="Mobile Number" placeholder="Enter Mobile Number" onChangeText={text => setEmail(text)} defaultValue={email} />
+                        <InputComponent variant="default" label="Password" placeholder="Enter Password" onChangeText={text => setPassword(text)} defaultValue={password} secureTextEntry={true} />
                     </View>
                     <View style={{
                         marginTop: 20,
@@ -112,6 +90,7 @@ const LoginScreen = ({ onLogin }: Props) => {
                             {
                                 color: colors.primary
                             }
+
                         }>
                             Register
                         </Typography>
@@ -171,3 +150,35 @@ const VerticalLine = () => {
         />
     )
 }
+
+type InputCompnentProps = {
+    variant: 'default' | 'h1' | 'h2' | 'h3' | 'h4';
+    label: string;
+    placeholder: string;
+    onChangeText: (text: string) => void;
+    defaultValue: string;
+    secureTextEntry?: boolean;
+};
+
+export const InputComponent = ({
+    variant,
+    label,
+    placeholder,
+    onChangeText,
+    defaultValue,
+    secureTextEntry,
+}: InputCompnentProps) => {
+    return (
+        <View>
+            <Typography variant={variant ? variant : "default"}>{label}</Typography>
+            <TextInput
+                style={styles.input}
+                placeholder={placeholder}
+                onChangeText={onChangeText}
+                defaultValue={defaultValue}
+                secureTextEntry={secureTextEntry}
+            />
+            <VerticalLine />
+        </View>
+    );
+};

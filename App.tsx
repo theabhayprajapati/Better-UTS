@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
-import LoginScreen from './src/screens/auth/LoginScreen';
+import RegisterScreen from './src/screens/auth/RegisterScreen';
 
 
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,8 @@ export default function App() {
   if (!isLoggedIn) {
     // Show the login screen if the user is not logged in.
     return <SafeAreaProviderWrapper>
-      <LoginScreen onLogin={handleLogin} />
+      {/* <LoginScreen onLogin={handleLogin} /> */}
+      <RegisterScreen />
     </SafeAreaProviderWrapper>
   }
 

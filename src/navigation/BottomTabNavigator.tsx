@@ -7,6 +7,8 @@ import { colors } from "../constants/Colors";
 import BookingScreen from "../screens/main/BookingScreen";
 import HomeScreen from "../screens/main/HomeScreen";
 import TicketScreen from "../screens/main/TicketScreen";
+import LanguageScreen from "../screens/main/LanguageScreen";
+import ProfileScreen from "../screens/main/ProfileScreen";
 
 type Props = {};
 
@@ -39,7 +41,7 @@ const BottomTabNavigator = (props: Props) => {
         />
         <Tab.Screen
           name="Language"
-          component={TicketScreen}
+          component={LanguageScreen}
           options={{
             headerShown: false,
           }}
@@ -60,7 +62,7 @@ const BottomTabNavigator = (props: Props) => {
         />
         <Tab.Screen
           name="Profile"
-          component={TicketScreen}
+          component={ProfileScreen}
           options={{
             headerShown: false,
           }}
@@ -96,8 +98,8 @@ const CustomTabBar = ({
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
         const isFocused = state.index === index;
 
         type IconNameProp = React.ComponentProps<typeof Entypo>["name"];
@@ -128,6 +130,7 @@ const CustomTabBar = ({
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                gap: 2,
               }}
             >
               <Entypo name={iconName} size={iconSize} color={iconColor} />
@@ -135,8 +138,8 @@ const CustomTabBar = ({
               {isFocused && (
                 <View
                   style={{
-                    width: 10,
-                    height: 10,
+                    width: 8,
+                    height: 8,
                     borderRadius: 5,
                     backgroundColor: colors.primary,
                   }}

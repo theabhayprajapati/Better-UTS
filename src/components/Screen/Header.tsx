@@ -52,7 +52,10 @@ const styles = StyleSheet.create({
     container: {
         height: 60,
         backgroundColor: colors.gray,
-        paddingHorizontal: 24
+        paddingHorizontal: 24,
+        justifyContent: "center",
+        // center
+
     }
 
 })
