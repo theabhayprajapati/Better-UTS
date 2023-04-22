@@ -6,9 +6,9 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../constants/Colors";
 import BookingScreen from "../screens/main/BookingScreen";
 import HomeScreen from "../screens/main/HomeScreen";
-import TicketScreen from "../screens/main/TicketScreen";
 import LanguageScreen from "../screens/main/LanguageScreen";
 import ProfileScreen from "../screens/main/ProfileScreen";
+import TicketScreen from "../screens/main/TicketScreen";
 
 type Props = {};
 
@@ -82,73 +82,75 @@ const CustomTabBar = ({
   navigation,
 }: CustomTabBarProps) => {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        backgroundColor: colors.bottomTab,
-        height: 60,
-        alignItems: "center",
-        margin: 10,
-        borderRadius: 15,
-      }}
-    >
-      {state.routes.map((route: any, index: number) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
-        const isFocused = state.index === index;
+    <View style={{ backgroundColor: 'transparent', position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          backgroundColor: colors.bottomTab,
+          height: 60,
+          alignItems: "center",
+          margin: 10,
+          borderRadius: 15,
+        }}
+      >
+        {state.routes.map((route: any, index: number) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+                ? options.title
+                : route.name;
+          const isFocused = state.index === index;
 
-        type IconNameProp = React.ComponentProps<typeof Entypo>["name"];
-        let iconName: IconNameProp = "home";
-        let iconSize = 24;
-        let iconColor = isFocused ? "#f2f2f2" : colors.not_selected;
-        if (route.name === "Home") {
-          iconName = "home";
-        } else if (route.name === "Wallet") {
-          iconName = "wallet";
-        } else if (route.name === "Ticket") {
-          iconName = "ticket";
-        } else if (route.name === "Profile") {
-          iconName = "user";
-        } else if (route.name === "Language") {
-          iconName = "language";
-        }
+          type IconNameProp = React.ComponentProps<typeof Entypo>["name"];
+          let iconName: IconNameProp = "home";
+          let iconSize = 24;
+          let iconColor = isFocused ? "#f2f2f2" : colors.not_selected;
+          if (route.name === "Home") {
+            iconName = "home";
+          } else if (route.name === "Wallet") {
+            iconName = "wallet";
+          } else if (route.name === "Ticket") {
+            iconName = "ticket";
+          } else if (route.name === "Profile") {
+            iconName = "user";
+          } else if (route.name === "Language") {
+            iconName = "language";
+          }
 
-        return (
-          <TouchableOpacity
-            key={route.key}
-            onPress={() => navigation.navigate(route.name)}
-            style={{ flex: 1, alignItems: "center" }}
-          >
-            <View
-              style={{
-                position: "relative",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-              }}
+          return (
+            <TouchableOpacity
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
+              style={{ flex: 1, alignItems: "center" }}
             >
-              <Entypo name={iconName} size={iconSize} color={iconColor} />
+              <View
+                style={{
+                  position: "relative",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 2,
+                }}
+              >
+                <Entypo name={iconName} size={iconSize} color={iconColor} />
 
-              {isFocused && (
-                <View
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: 5,
-                    backgroundColor: colors.primary,
-                  }}
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-        );
-      })}
+                {isFocused && (
+                  <View
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: 5,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 };

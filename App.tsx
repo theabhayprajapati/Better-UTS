@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+import SplashScreen from './src/screens/SplashScreen';
 import RegisterScreen from './src/screens/auth/RegisterScreen';
 
 
@@ -21,9 +22,7 @@ export default function App() {
   if (!isAppReady) {
     // Show a splash screen while the app is initializing.
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
+      <SplashScreen />
     );
   }
 
