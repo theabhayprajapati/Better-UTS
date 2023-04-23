@@ -1,6 +1,9 @@
+import { AntDesign } from "@expo/vector-icons";
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Typography from '../../components/Common/Typography';
+import { colors } from "../../constants/Colors";
 interface Ticket {
   fare: number;
   startStation: string;
@@ -39,49 +42,51 @@ type Props = {}
 const TicketItem: React.FC<{ ticket: Ticket }> = ({ ticket }) => {
   return (
     <View style={styles.ticketItem}>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Fare:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.fare}</Text>
+      <View style={styles.rightRow}>
+        <View style={styles.ticketItemRow}>
+          <Typography variant='default' style={{
+            color: colors.gray,
+            fontWeight: '600',
+            fontSize: 12,
+          }}>
+            Journey M-Ticket
+          </Typography>
+        </View>
+        <View style={styles.ticketItemRow}>
+          <Text style={styles.ticketItemTitle}>Bandra Jn. To Mumbai CSMT</Text>
+          {/* right arrow */}
+        </View>
+        <View style={{ ...styles.ticketItemRow, gap: 10 }}>
+          <View style={{
+            flexDirection: "row"
+          }}>
+            <Text style={{ ...styles.ticketItemTitle, color: colors.gray }}>Adult: </Text><Text>1</Text>
+          </View>
+          <View style={{
+            flexDirection: "row"
+          }}>
+            <Text style={{ ...styles.ticketItemTitle, color: colors.gray }}>Child: </Text><Text>0</Text>
+
+          </View>
+        </View>
+        <View style={styles.ticketItemRow}>
+          <Text style={{ ...styles.ticketItemTitle, color: colors.gray }}>Date: </Text> <Text>04/08/2020</Text>
+        </View>
+
+
+      </View >
+      <View style={styles.viewTicketButton}>
+        <TouchableOpacity>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
       </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Start Station:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.startStation}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>End Station:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.endStation}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Via:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.via}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Adults:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.adults}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Children:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.children}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>Booking Date:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.bookingDate}</Text>
-      </View>
-      <View style={styles.ticketItemRow}>
-        <Text style={styles.ticketItemTitle}>UTS No.:</Text>
-        <Text style={styles.ticketItemValue}>{ticket.utsNo}</Text>
-      </View>
-      <TouchableOpacity style={styles.viewTicketButton}>
-        <Text style={styles.viewTicketButtonText}>View Ticket</Text>
-      </TouchableOpacity>
-    </View>
+    </View >
   );
 };
 const TicketScreen = (props: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Your Tickets</Text>
-      <Text style={styles.currentLanguageText}>Current Language: {'English'}</Text>
       <ScrollView style={styles.ticketList}>
         {TICKETS_DATA.map((ticket, index) => (
           <TicketItem key={index} ticket={ticket} />
@@ -101,35 +106,50 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: '#ccc',
     borderWidth: 1,
+    flexDirection: "row",
+    width: "100%",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3
+  },
+  rightRow: {
+    backgroundColor: '#fff',
+
+    width: "80%"
+  },
+  viewTicketButton: {
+    width: "20%",
+    flexDirection: "row",
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ticketItemRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 5,
   },
   ticketItemTitle: {
     fontWeight: 'bold',
     marginRight: 10,
+    color: colors.gray,
   },
   ticketItemValue: {
     flex: 1,
     textAlign: 'right',
   },
-  viewTicketButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 5,
-    padding: 10,
-    marginTop: 10,
-    alignSelf: 'center',
-  },
+
   viewTicketButtonText: {
     color: '#fff',
     fontWeight: 'bold',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
@@ -144,5 +164,6 @@ const styles = StyleSheet.create({
   },
   ticketList: {
     flex: 1,
+
   },
 })

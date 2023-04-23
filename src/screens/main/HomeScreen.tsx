@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button } from "@rneui/themed";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -16,6 +16,7 @@ import BackHeader from "../../components/Screen/BackHeader";
 import Header from "../../components/Screen/Header";
 import { colors, margin, padding } from "../../constants/Colors";
 import { mumbaiLocalTrainStations } from "../../constants/stations";
+import { StationContext } from '../../context/appcontent';
 import TicketDetails from './TicketDetails';
 import TicketSummary from './TicketSummary';
 type Props = {};
@@ -30,7 +31,7 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 const HomeScreen = (props: Props) => {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator initialRouteName="MainHomeScreen">
       <HomeStack.Screen
         name="MainHomeScreen"
         component={MainHomeScreen}
@@ -69,12 +70,20 @@ const HomeScreen = (props: Props) => {
 
 export default HomeScreen;
 
-const SearchHomeScreen = () => {
-  const navigation = useNavigation();
+type MainHomeScreenProps = {};
+type SearchHomeScreenProps = {
+  route: any;
+  navigation: any;
+}
+
+const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
   const [recentlySelected, setRecentlySelected] = useState(mumbaiLocalTrainStations.slice(0, 3));
   const [allStations, setAllStations] = useState(mumbaiLocalTrainStations);
   const [searchResults, setSearchResults] = useState([]);
+  const { setFromStation, setToStation } = useContext(StationContext);
 
+  const { select } = route.params
+  console.log('select', select);
   const handleSearch = (text: any) => {
     // Perform the search here and update the searchResults state
     if (text === '') {
@@ -88,6 +97,15 @@ const SearchHomeScreen = () => {
       ),
     ]);
   };
+  const selectStation = (station: string) => {
+    console.log('selectStation', station);
+    if (select === 'from') {
+      setFromStation(station);
+    } else {
+      setToStation(station);
+    }
+    navigation.goBack();
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -104,13 +122,13 @@ const SearchHomeScreen = () => {
           />
         </View>
 
-        <View style={styles.stationsContainer}>
+        <ScrollView style={styles.stationsContainer}>
           {searchResults.length === 0 && (
             <>
               <View style={styles.recentlySelectedContainer}>
                 <Text style={styles.heading}>Recently selected:</Text>
                 {recentlySelected.map((station) => (
-                  <TouchableOpacity style={styles.stationContainer}>
+                  <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
                     <Text style={styles.station} key={station}>
                       {station}
                     </Text>
@@ -120,7 +138,7 @@ const SearchHomeScreen = () => {
               <View style={styles.allStationsContainer}>
                 <Text style={styles.heading}>All stations:</Text>
                 {allStations.map((station) => (
-                  <TouchableOpacity style={styles.stationContainer}>
+                  <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
                     <Text style={styles.station} key={station}>
                       {station}
                     </Text>
@@ -133,7 +151,7 @@ const SearchHomeScreen = () => {
           <View style={styles.searchResultsContainer}>
             {searchResults.length > 0
               ? searchResults.map((station) => (
-                <TouchableOpacity style={styles.stationContainer}>
+                <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
                   <Text style={styles.station} key={station}>
                     {station}
                   </Text>
@@ -141,19 +159,21 @@ const SearchHomeScreen = () => {
               ))
               : null}
           </View>
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
 };
 
 const MainHomeScreen = ({ navigation }: any) => {
-  const handlePress = () => {
+  type station = "from" | "to";
+  const handlePress = (fromStation: station) => {
     navigation.navigate('SearchHomeScreen', {
-      screen: 'SearchHomeScreen',
+      select: fromStation
     }
     );
   };
+  const { fromStation, toStation } = useContext(StationContext);
   return (
     <SafeAreaView style={styles.container}>
       {/* header, booking, other booking */}
@@ -170,15 +190,15 @@ const MainHomeScreen = ({ navigation }: any) => {
           >
             <PlaceInput
               label="From"
-              value="Mumbai Central"
+              value={fromStation ? fromStation : "Virar"}
               color={colors.primary}
-              onPress={handlePress}
+              onPress={() => handlePress("from")}
             />
             <PlaceInput
               label="To"
-              value="Ahmedabad"
+              value={toStation ? toStation : "Churchgate"}
               color={colors.primary}
-              onPress={handlePress}
+              onPress={() => handlePress("to")}
             />
             <View></View>
           </View>

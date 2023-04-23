@@ -30,8 +30,11 @@ type CustomTabBarProps = {
 
 const BottomTabNavigator = (props: Props) => {
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+    <NavigationContainer >
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBar={(props) => <CustomTabBar {...props} />
+        }>
         <Tab.Screen
           name="Home"
           component={HomeScreen}
@@ -82,7 +85,9 @@ const CustomTabBar = ({
   navigation,
 }: CustomTabBarProps) => {
   return (
-    <View style={{ backgroundColor: 'transparent', position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+    <View style={{ backgroundColor: 'transparent', position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}
+
+    >
       <View
         style={{
           flexDirection: "row",
