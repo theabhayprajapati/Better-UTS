@@ -117,11 +117,11 @@ export const StationContext = createContext<StationContextType>({
 export const StationProvider = ({ children }: Props) => {
     const [fromStation, setFromStation] = useState('');
     const [toStation, setToStation] = useState('');
-    const [adult, setAdult] = useState(0);
+    const [adult, setAdult] = useState(1);
     const [child, setChild] = useState(0);
-    const [trainType, setTrainType] = useState('');
-    const [classType, setClass] = useState('');
-    const [ticketType, setTicketType] = useState('');
+    const [trainType, setTrainType] = useState('ORDINARY');
+    const [classType, setClass] = useState('SECOND');
+    const [ticketType, setTicketType] = useState('ONE_WAY');
     return (
         <StationContext.Provider
             value={{
@@ -147,4 +147,5 @@ export const StationProvider = ({ children }: Props) => {
 };
 
 
-export { AppContentContext, AppContextProvider }
+export { AppContentContext, AppContextProvider };
+

@@ -1,22 +1,28 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Typography from '../../components/Common/Typography'
 import BackHeader from '../../components/Screen/BackHeader'
 import { colors, padding } from '../../constants/Colors'
+import { StationContext } from '../../context/appcontent'
 
 type Props = {}
 
 const TicketSummary = (props: Props) => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    const { fromStation, toStation, adult, child, ticketType, trainType } = useContext(StationContext);
     return (
         <SafeAreaView style={styles.container}>
             <BackHeader label='Ticket Details' onPress={
                 () => navigation.goBack()
             } />
             <View style={styles.bottom}>
-                <View>
+                <View style={{
+                    backgroundColor: colors.gray,
+                    borderRadius: 10,
+                    padding: padding.primary,
+                }}>
                     <View style={{
                         backgroundColor: colors.primary,
                         paddingHorizontal: padding.primary,
@@ -27,16 +33,16 @@ const TicketSummary = (props: Props) => {
                         <Typography variant='h4'>Ticket Summary</Typography>
                     </View>
                     <View style={{ padding: padding.primary, flexDirection: 'row' }}>
-                        <UpDownText upperText='Source Sation' lowerText='Mumbai Central' />
-                        <UpDownText upperText='Destination' lowerText='Matunga Road' />
+                        <UpDownText upperText='Source Sation' lowerText={fromStation} />
+                        <UpDownText upperText='Destination' lowerText={toStation} />
                     </View>
                     <View style={{ padding: padding.primary, flexDirection: 'row' }}>
-                        <UpDownText upperText='Adult' lowerText='1' />
-                        <UpDownText upperText='Child' lowerText='0' />
+                        <UpDownText upperText='Adult' lowerText={adult} />
+                        <UpDownText upperText='Child' lowerText={child} />
                     </View>
                     <View style={{ padding: padding.primary, flexDirection: 'row' }}>
-                        <UpDownText upperText='Ticket Type' lowerText='JOURNEY' />
-                        <UpDownText upperText='TRAIN TYPE' lowerText='ORDINARY' />
+                        <UpDownText upperText='Ticket Type' lowerText={ticketType} />
+                        <UpDownText upperText='Train Type' lowerText={trainType} />
                     </View>
                     {/* button book */}
                     {/* view total fare */}
@@ -96,7 +102,7 @@ const styles = StyleSheet.create({
     upperText: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 4,
         color: colors.primary,
     },
     lowerText: {
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
 
 type UpDownTextProps = {
     upperText: string;
-    lowerText: string;
+    lowerText: string | number;
 };
 
 const UpDownText = ({ upperText, lowerText }: UpDownTextProps) => {
