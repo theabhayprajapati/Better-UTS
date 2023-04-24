@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from '../../components/Screen/Header';
-import { colors } from '../../constants/Colors';
+import { colors, margin } from '../../constants/Colors';
 
 const IndianLanguages = [
   { id: '0', name: 'English' },
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     height: 50,
-    marginBottom: 8,
+    marginBottom: margin.sm
   },
   selectedItem: {
     backgroundColor: "gray"

@@ -1,3 +1,4 @@
+import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -5,8 +6,8 @@ import { AppContextProvider, StationProvider } from './src/context/appcontent';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import RegisterScreen from './src/screens/auth/RegisterScreen';
 
-
-
+SplashScreen.preventAutoHideAsync();
+const RUBIK_FONT_PATH = './assets/fonts/Rubik/static';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAppReady, setIsAppReady] = useState(false);

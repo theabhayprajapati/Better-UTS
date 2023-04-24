@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button } from "@rneui/themed";
 import React, { useContext, useState } from "react";
@@ -12,13 +12,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Typography from "../../components/Common/Typography";
+import { UpDownElement } from "../../components/Common/UpDownElement";
 import BackHeader from "../../components/Screen/BackHeader";
 import Header from "../../components/Screen/Header";
 import { colors, margin, padding } from "../../constants/Colors";
 import { mumbaiLocalTrainStations } from "../../constants/stations";
-import { StationContext } from '../../context/appcontent';
-import TicketDetails from './TicketDetails';
-import TicketSummary from './TicketSummary';
+import { StationContext } from "../../context/appcontent";
+import TicketDetails from "./TicketDetails";
+import TicketSummary from "./TicketSummary";
 type Props = {};
 
 type HomeStackParamList = {
@@ -54,7 +55,6 @@ const HomeScreen = (props: Props) => {
         }}
       />
 
-
       <HomeStack.Screen
         name="SearchHomeScreen"
         component={SearchHomeScreen}
@@ -62,8 +62,6 @@ const HomeScreen = (props: Props) => {
           headerShown: false,
         }}
       />
-
-
     </HomeStack.Navigator>
   );
 };
@@ -74,19 +72,21 @@ type MainHomeScreenProps = {};
 type SearchHomeScreenProps = {
   route: any;
   navigation: any;
-}
+};
 
 const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
-  const [recentlySelected, setRecentlySelected] = useState(mumbaiLocalTrainStations.slice(0, 3));
+  const [recentlySelected, setRecentlySelected] = useState(
+    mumbaiLocalTrainStations.slice(0, 3)
+  );
   const [allStations, setAllStations] = useState(mumbaiLocalTrainStations);
   const [searchResults, setSearchResults] = useState([]);
   const { setFromStation, setToStation } = useContext(StationContext);
 
-  const { select } = route.params
-  console.log('select', select);
+  const { select } = route.params || 'from';
+  console.log("select", select);
   const handleSearch = (text: any) => {
     // Perform the search here and update the searchResults state
-    if (text === '') {
+    if (text === "") {
       setSearchResults([]);
       return;
     }
@@ -98,28 +98,43 @@ const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
     ]);
   };
   const selectStation = (station: string) => {
-    console.log('selectStation', station);
-    if (select === 'from') {
+    console.log("selectStation", station);
+    if (select === "from") {
       setFromStation(station);
     } else {
       setToStation(station);
     }
     navigation.goBack();
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackHeader label="Search" onPress={() => navigation.goBack()} />
+      <BackHeader label="Enter Source Station" onPress={() => navigation.goBack()} />
       <View style={styles.bottom}>
-
         <View style={styles.searchContainer}>
-          <Ionicons name="search" size={24} color="#7F8FA6" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => handleSearch(text)}
-            placeholder={'Search'}
-            placeholderTextColor="#7F8FA6"
-          />
+          <UpDownElement
+            label="Search Station Name / Code"
+            element={
+              // search icon
+              <View style={{ flexDirection: 'row', gap: 5, marginTop: 8, alignItems: 'center' }}>
+                <AntDesign name="search1" size={14} color={colors.primary} />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => handleSearch(text)}
+                  placeholder={"Search"}
+                  placeholderTextColor={colors.primary}
+                />
+              </View>
+            } />
+          <TouchableOpacity>
+            <Text style={{
+              color: '#a1a1a1',
+              fontSize: 12,
+              marginTop: margin.sm,
+            }}>
+              Nearby Stations
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <ScrollView style={styles.stationsContainer}>
@@ -128,7 +143,10 @@ const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
               <View style={styles.recentlySelectedContainer}>
                 <Text style={styles.heading}>Recently selected:</Text>
                 {recentlySelected.map((station) => (
-                  <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
+                  <TouchableOpacity
+                    style={styles.stationContainer}
+                    onPress={() => selectStation(station)}
+                  >
                     <Text style={styles.station} key={station}>
                       {station}
                     </Text>
@@ -138,7 +156,10 @@ const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
               <View style={styles.allStationsContainer}>
                 <Text style={styles.heading}>All stations:</Text>
                 {allStations.map((station) => (
-                  <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
+                  <TouchableOpacity
+                    style={styles.stationContainer}
+                    onPress={() => selectStation(station)}
+                  >
                     <Text style={styles.station} key={station}>
                       {station}
                     </Text>
@@ -151,7 +172,10 @@ const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
           <View style={styles.searchResultsContainer}>
             {searchResults.length > 0
               ? searchResults.map((station) => (
-                <TouchableOpacity style={styles.stationContainer} onPress={() => selectStation(station)}>
+                <TouchableOpacity
+                  style={styles.stationContainer}
+                  onPress={() => selectStation(station)}
+                >
                   <Text style={styles.station} key={station}>
                     {station}
                   </Text>
@@ -168,12 +192,18 @@ const SearchHomeScreen = ({ route, navigation }: SearchHomeScreenProps) => {
 const MainHomeScreen = ({ navigation }: any) => {
   type station = "from" | "to";
   const handlePress = (fromStation: station) => {
-    navigation.navigate('SearchHomeScreen', {
-      select: fromStation
-    }
-    );
+    navigation.navigate("SearchHomeScreen", {
+      select: fromStation,
+    });
   };
-  const { fromStation, toStation } = useContext(StationContext);
+
+  const { fromStation, toStation, setToStation, setFromStation } =
+    useContext(StationContext);
+  const handleSwapStations = () => {
+    const temp = fromStation;
+    setFromStation(toStation);
+    setToStation(temp);
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* header, booking, other booking */}
@@ -190,13 +220,30 @@ const MainHomeScreen = ({ navigation }: any) => {
           >
             <PlaceInput
               label="From"
-              value={fromStation ? fromStation : "Virar"}
+              value={fromStation}
               color={colors.primary}
               onPress={() => handlePress("from")}
             />
+            <View
+              style={{
+                width: "20%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 50,
+              }}
+            >
+              <TouchableOpacity onPress={handleSwapStations}>
+                <Ionicons
+                  name="swap-horizontal-outline"
+                  size={24}
+                  color="white"
+                />
+              </TouchableOpacity>
+            </View>
             <PlaceInput
               label="To"
-              value={toStation ? toStation : "Churchgate"}
+              value={toStation}
               color={colors.primary}
               onPress={() => handlePress("to")}
             />
@@ -210,60 +257,58 @@ const MainHomeScreen = ({ navigation }: any) => {
           >
             <Button
               buttonStyle={{
-                borderRadius: 50,
+                borderRadius: 58,
+                height: 48,
                 backgroundColor: colors.primary,
               }}
-              onPress={() => navigation.navigate('TicketDetails')}
+              onPress={() => navigation.navigate("TicketDetails")}
             >
               <Typography variant="h4">Book Ticket</Typography>
             </Button>
           </TouchableOpacity>
         </View>
         <View style={styles.otherBookingSection}>
-          <Typography variant="h3">Other Booking mode</Typography>
+          <Typography variant="h4">Other Booking mode</Typography>
           <View style={styles.gridcontainer}>
             <View style={styles.gridrow}>
-              <TouchableOpacity style={styles.gridcolumn}>
-                <Text
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  Quick Booking
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.gridcolumn}>
-                <Text
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  Platform Booking
-                </Text>
-              </TouchableOpacity>
+              <TextWithIcon
+                icon={
+                  <Ionicons
+                    name="timer-outline"
+                    size={24}
+                    color={colors.primary}
+                  />
+                }
+                text="Quick Booking"
+              />
+              {/* platform icon */}
+              <TextWithIcon
+                icon={
+                  <Ionicons
+                    name="train-outline"
+                    size={24}
+                    color={colors.primary}
+                  />
+                }
+                text="Platform Booking"
+              />
             </View>
 
             <View style={styles.gridrow}>
-              <TouchableOpacity style={styles.gridcolumn}>
-                <Text
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  Season Booking
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.gridcolumn}>
-                {/* qr icons */}
-
-                <Text
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  QR Booking
-                </Text>
-              </TouchableOpacity>
+              <TextWithIcon
+                icon={<Entypo name="ticket" size={24} color={colors.primary} />}
+                text="Season Booking"
+              />
+              <TextWithIcon
+                icon={
+                  <Ionicons
+                    name="qr-code-outline"
+                    size={24}
+                    color={colors.primary}
+                  />
+                }
+                text="QR Booking"
+              />
             </View>
           </View>
         </View>
@@ -271,11 +316,31 @@ const MainHomeScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
+const TextWithIcon = ({ icon, text }: any) => {
+  return (
+    <TouchableOpacity style={styles.gridcolumn}>
+      {/* qr icons */}
+      <View style={{ width: "25%" }}>{icon}</View>
+      <View style={{ width: "75%" }}>
+        <Typography
+          variant="default"
+          style={{
+            color: "white",
+            fontSize: 12,
+          }}
+        >
+          {text}
+        </Typography>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.gray,
+    fontFamily: "Rubik-Regular",
   },
   bottom: {
     paddingHorizontal: padding.primary,
@@ -287,7 +352,7 @@ const styles = StyleSheet.create({
     marginTop: margin.primary,
     backgroundColor: colors.gray,
     paddingHorizontal: padding.primary,
-    borderRadius: 10,
+    borderRadius: 18,
     paddingVertical: padding.primary,
   },
   otherBookingSection: {
@@ -302,17 +367,18 @@ const styles = StyleSheet.create({
   },
   gridrow: {
     flexDirection: "row",
-    width: '100%',
+    width: "100%",
     marginTop: 16,
     gap: margin.primary,
   },
   gridcolumn: {
     width: "49%",
     height: 50,
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#131313",
     borderRadius: 10,
+    paddingHorizontal: padding.primary,
+    flexDirection: "row",
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -329,9 +395,10 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     fontWeight: "bold",
-  }, searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  },
+  searchContainer: {
+    flexDirection: "column",
+    alignItems: "flex-start",
     backgroundColor: "#131313",
     borderRadius: 10,
     paddingVertical: 10,
@@ -343,7 +410,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 16,
   },
   searchInput: {
@@ -352,7 +419,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     fontSize: 16,
-    color: 'white'
+    color: "white",
   },
   stationsContainer: {
     flexDirection: "column",
@@ -364,7 +431,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     backgroundColor: "#131313",
     borderRadius: 10,
-    marginBottom: 16,
+    marginBottom: margin.sm,
     paddingHorizontal: 16,
   },
   recentlySelectedContainer: {
@@ -381,7 +448,7 @@ const styles = StyleSheet.create({
   station: {
     fontSize: 16,
     color: "white",
-    marginBottom: 8,
+    marginBottom: margin.sm
   },
   searchResultsContainer: {
     marginBottom: 16,
@@ -389,7 +456,7 @@ const styles = StyleSheet.create({
 });
 
 // horixonal line
-const HorizontalLine = ({ color }: { color: string }) => {
+export const HorizontalLine = ({ color }: { color: string }) => {
   return (
     <View
       style={{
@@ -413,7 +480,7 @@ const PlaceInput = ({ label, value, color, onPress }: PlaceInputProps) => {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        width: "49%",
+        width: "40%",
         flexDirection: "column",
         gap: 5,
       }}
@@ -431,9 +498,8 @@ const PlaceInput = ({ label, value, color, onPress }: PlaceInputProps) => {
         </Text>
         <Text
           style={{
-            color: "white",
-            fontSize: 16,
-            fontWeight: "bold",
+            color: value === "Select Station" ? "#A3A3A3" : "#FFFFFF",
+            fontSize: 18,
           }}
         >
           {value}

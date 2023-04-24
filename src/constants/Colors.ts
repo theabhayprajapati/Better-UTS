@@ -1,14 +1,17 @@
-const colors = {
+export const colors = {
     primary: '#BF5411',
     bottomTab: '#343434',
     not_selected: '#555453',
     gray: "#1f1f1f"
 }
-const margin = {
+export const margin = {
     primary: 24,
+    sm: 8,
 }
-const padding = {
+export const padding = {
     primary: 16,
 }
-export { colors, margin, padding }
 
+export const fontSize = {
+
+}

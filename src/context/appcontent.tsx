@@ -115,8 +115,8 @@ export const StationContext = createContext<StationContextType>({
 
 });
 export const StationProvider = ({ children }: Props) => {
-    const [fromStation, setFromStation] = useState('');
-    const [toStation, setToStation] = useState('');
+    const [fromStation, setFromStation] = useState('Select Station');
+    const [toStation, setToStation] = useState('Select Station');
     const [adult, setAdult] = useState(1);
     const [child, setChild] = useState(0);
     const [trainType, setTrainType] = useState('ORDINARY');
