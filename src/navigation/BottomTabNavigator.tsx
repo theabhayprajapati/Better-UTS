@@ -85,9 +85,7 @@ const CustomTabBar = ({
   navigation,
 }: CustomTabBarProps) => {
   return (
-    <View style={{ backgroundColor: 'transparent', position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}
-
-    >
+    <View style={{ backgroundColor: 'transparent', position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }} >
       <View
         style={{
           flexDirection: "row",

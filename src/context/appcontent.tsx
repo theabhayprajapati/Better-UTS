@@ -1,3 +1,4 @@
+
 import React, { ReactNode, createContext, useState } from 'react';
 type AppContentContextType = {
     isLoggedIn: boolean;
@@ -40,9 +41,11 @@ const AppContextProvider = ({ children }: Props) => {
     const [toStation, setToStation] = useState('');
     const handleLogin = () => {
         setIsLoggedIn(true);
+
     }
     const handleLogout = () => {
         setIsLoggedIn(false);
+
     }
     const handleRegister = () => {
         setIsLoggedIn(true);

@@ -5,8 +5,10 @@ import Typography from "../../components/Common/Typography";
 import Header from "../../components/Screen/Header";
 import { colors } from "../../constants/Colors";
 
-import { Button, CheckBox } from "@rneui/themed";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { Button } from "@rneui/themed";
 import { TouchableOpacity } from "react-native";
+import { CheckBox } from "react-native-elements/dist/checkbox/CheckBox";
 import { AppContentContext } from "../../context/appcontent";
 
 type Props = {};
@@ -21,6 +23,20 @@ const LoginScreen = () => {
     };
     // AppContentContext
     const { handleLogin } = useContext(AppContentContext);
+    const navigation = useNavigation();
+    const navigateToHome = () => {
+        handleLogin();
+        navigation.dispatch(
+            CommonActions.navigate({
+                name: 'Home',
+                params: { /* any params you want to pass to the screen */ },
+            })
+        );
+    };
+    const navigateToRegister = () => {
+        // @ts-ignore
+        navigation.navigate('Register');
+    };
 
     return (
         <SafeAreaView
@@ -86,18 +102,24 @@ const LoginScreen = () => {
                         style={{
                             marginTop: 20,
                             flexDirection: "row",
+                            alignItems: "center",
                             justifyContent: "space-between",
                         }}
                     >
-                        <View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                            }}
+                        >
                             <CheckBox
                                 checked={checked}
                                 onPress={toggleCheckbox}
-                                // Use ThemeProvider to make change for all checkbox
-                                iconType="material-community"
-                                checkedIcon="checkbox-marked"
-                                uncheckedIcon="checkbox-blank-outline"
-                                checkedColor="red"
+                                style={{
+                                    height: 18,
+                                    width: 18,
+                                    borderRadius: 4,
+                                }}
                             />
                             <Typography style={{ color: colors.textgray, fontSize: 14 }} variant="default">Stay Signed In</Typography>
                         </View>
@@ -113,10 +135,11 @@ const LoginScreen = () => {
                             </Typography>
                         </TouchableOpacity>
                     </View>
-                    <View
+                    <TouchableOpacity
                         style={{
                             marginTop: 20,
                         }}
+                        onPress={() => navigateToHome()}
                     >
                         <Button
                             title="Let me in"
@@ -126,7 +149,7 @@ const LoginScreen = () => {
                                 height: 48,
                             }}
                         />
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <View
                     style={{
@@ -138,7 +161,9 @@ const LoginScreen = () => {
                     }}
                 >
                     <Typography variant="default">Don't have an account?</Typography>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={navigateToRegister}
+                    >
                         <Typography
                             variant="default"
                             style={{
@@ -196,9 +221,9 @@ const VerticalLine = () => {
         <View
             style={{
                 height: 2,
-                width: "100%",
+                width: "98%",
                 backgroundColor: "gray",
-                marginHorizontal: 10,
+                marginHorizontal: "1%",
             }}
         />
     );
@@ -233,9 +258,11 @@ export const InputComponent = ({
                 placeholder={placeholder}
                 onChangeText={onChangeText}
                 defaultValue={defaultValue}
+                placeholderTextColor={colors.placeholder}
                 secureTextEntry={secureTextEntry}
             />
             <VerticalLine />
         </View>
     );
 };
+

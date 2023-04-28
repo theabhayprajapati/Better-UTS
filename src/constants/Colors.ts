@@ -4,6 +4,7 @@ export const colors = {
     not_selected: '#555453',
     gray: "#1f1f1f",
     textgray: "#AFAFAF",
+    placeholder: "#8C8C8C",
 }
 export const margin = {
     primary: 24,
