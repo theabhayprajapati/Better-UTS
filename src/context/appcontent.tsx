@@ -34,7 +34,6 @@ interface Props {
     children: ReactNode;
 }
 const AppContextProvider = ({ children }: Props) => {
-
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [isAppReady, setIsAppReady] = useState(false);
     const [fromStation, setFromStation] = useState('');
