@@ -36,5 +36,5 @@ And that's it! With the UTS app, you can book your train tickets from the comfor
 
 ## Android Download Link
 
-To download the Android APK for this project, click [here](https://expo.dev/artifacts/eas/9niDsp33hmtWsDUVBayh5A.apk).
+To download the Android APK for this project, click [here](https://expo.dev/artifacts/eas/n2vJYRL3EJMrTtEujA6syp.apk).
 
